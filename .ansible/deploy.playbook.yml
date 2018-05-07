@@ -47,7 +47,7 @@
         force: yes
       with_items:
         - storage
-        - assets
+        - public/assets
     - name: Symlink shared assets
       file:
         force: yes
@@ -56,7 +56,8 @@
         state: link
       with_items:
         - storage
-        - assets
+        - public/assets
+        - config.php
     - name: Set up directory permissions of release
       become: true
       file:
