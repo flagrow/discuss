@@ -88,7 +88,7 @@
       become: true
       command: "apache2ctl graceful"
     - name: Notify and party
-      when: webhook_uri
+      when: webhook_uri is defined
       uri:
         url: "{{ webhook_uri }}"
         method: POST
