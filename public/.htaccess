@@ -20,6 +20,7 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine on
+  RewriteBase /discuss/
 
   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
