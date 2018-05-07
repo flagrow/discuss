@@ -19,6 +19,10 @@
     project_path: "{{ deployment_path }}/{{ project }}/"
 
   tasks:
+    - name: Check for existing config.php
+      stat:
+        path: "{{ deploy_helper.shared_path }}/config.php"
+      register: config
     - name: Initialize the deploy helper
       deploy_helper:
         path: "{{ project_path }}"
@@ -66,13 +70,13 @@
         - path: "{{ deploy_helper.shared_path }}/storage/"
           recurse: yes
     - name: Run artisan commands for existing installation
-      when: deploy_helper.previous_release
+      when: config.stat.exists
       become: true
       become_user: "{{ web_user }}"
       command: "php {{ deploy_helper.new_release_path }}/flarum {{ item }} -n"
       with_items:
         - cache:clear
-        - migrate --env=production --force
+        - migrate
     - name: Finalize the deploy, removing the unfinished file and switching the symlink
       become: yes
       deploy_helper:
@@ -84,7 +88,7 @@
       become: true
       command: "apache2ctl graceful"
     - name: Notify and party
-      when: webhook_uri is defined
+      when: webhook_uri
       uri:
         url: "{{ webhook_uri }}"
         method: POST
