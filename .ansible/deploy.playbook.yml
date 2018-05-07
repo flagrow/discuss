@@ -19,13 +19,13 @@
     project_path: "{{ deployment_path }}/{{ project }}/"
 
   tasks:
+    - name: Initialize the deploy helper
+      deploy_helper:
+        path: "{{ project_path }}"
     - name: Check for existing config.php
       stat:
         path: "{{ deploy_helper.shared_path }}/config.php"
       register: config
-    - name: Initialize the deploy helper
-      deploy_helper:
-        path: "{{ project_path }}"
     - name: Deploy release
       git:
         repo: "{{ git_repo }}"
