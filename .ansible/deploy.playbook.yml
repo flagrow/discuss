@@ -70,35 +70,8 @@
           recurse: yes
         - path: "{{ deploy_helper.shared_path }}/storage/"
           recurse: yes
-    - name: Identify bower files
-      find:
-        paths: "{{ deploy_helper.new_release_path }}/vendor"
-        patterns: 'bower.json'
-        recurse: yes
-      register: bowerCompileables
-    - name: Install bower packages
-      bower:
-        path: "{{ item.path | dirname }}"
-      with_items: "{{ bowerCompileables.files }}"
-    - name: Identify npm files
-      find:
-        paths: "{{ deploy_helper.new_release_path }}/vendor"
-        patterns: 'package.json'
-        recurse: yes
-      register: npmCompileables
-    - name: Install npm packages
-      npm:
-        path: "{{ item.path | dirname }}"
-      with_items: "{{ npmCompileables.files }}"
-    - name: Identify gulp files
-      find:
-        paths: "{{ deploy_helper.new_release_path }}/vendor"
-        patterns: 'Gulpfile.js'
-        recurse: yes
-      register: gulpCompileables
-    - name: Compile with Gulp
-      command: "{{ item.path | dirname }}/node_modules/gulp/bin/gulp.js"
-      with_items: "{{ gulpCompileables.files }}"
+    - name: Recompile dist files
+      command: bash scripts/compile.sh
     - name: Run artisan commands for existing installation
       when: config.stat.exists
       become: true
