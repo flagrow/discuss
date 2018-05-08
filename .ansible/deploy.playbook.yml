@@ -71,7 +71,7 @@
         - path: "{{ deploy_helper.shared_path }}/storage/"
           recurse: yes
     - name: Recompile dist files
-      command: bash scripts/compile.sh
+      command: bash {{ deploy_helper.new_release_path }}/scripts/compile.sh
     - name: Run artisan commands for existing installation
       when: config.stat.exists
       become: true
