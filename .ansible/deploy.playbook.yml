@@ -84,7 +84,7 @@
         - migrate
     - name: Delete rev-manifest.json
       file:
-        path: "{{ deploy_helper.shared_path }}/public/assets/ref-manifest.json"
+        path: "{{ deploy_helper.shared_path }}/public/assets/rev-manifest.json"
         state: absent
     - name: Finalize the deploy, removing the unfinished file and switching the symlink
       become: yes
