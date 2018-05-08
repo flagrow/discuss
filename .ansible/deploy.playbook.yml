@@ -85,11 +85,11 @@
     - name: Install bower packages
       bower:
         path: "{{ item.path }}"
-      loop: "bowerCompileables"
+      loop: "{{ bowerCompileables }}"
     - name: Install npm packages
       npm:
         path: "{{ item.path }}"
-      loop: "npmCompileables"
+      loop: "{{ npmCompileables }}"
     - name: Run artisan commands for existing installation
       when: config.stat.exists
       become: true
