@@ -66,7 +66,7 @@
         owner: "{{ web_user }}"
         mode: 0755
       with_items:
-        - path: "{{ deploy_helper.shared_path }}/assets/"
+        - path: "{{ deploy_helper.shared_path }}/public/assets/"
           recurse: yes
         - path: "{{ deploy_helper.shared_path }}/storage/"
           recurse: yes
@@ -82,6 +82,10 @@
       with_items:
         - cache:clear
         - migrate
+    - name: Delete rev-manifest.json
+      file:
+        path: "{{ deploy_helper.shared_path }}/public/assets/ref-manifest.json"
+        state: absent
     - name: Finalize the deploy, removing the unfinished file and switching the symlink
       become: yes
       deploy_helper:
