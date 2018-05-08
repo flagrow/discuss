@@ -76,20 +76,29 @@
         recurse: yes
         patterns: 'bower.json'
       register: bowerCompileables
-    - name: Identify npm files
-      find:
-        paths: "{{ deploy_helper.new_release_path }}/vendor"
-        recurse: yes
-        patterns: 'package.lock'
-      register: npmCompileables
     - name: Install bower packages
       bower:
         path: "{{ item.path | dirname }}"
       loop: "{{ bowerCompileables.files }}"
+    - name: Identify npm files
+      find:
+        paths: "{{ deploy_helper.new_release_path }}/vendor"
+        recurse: yes
+        patterns: 'package.json'
+      register: npmCompileables
     - name: Install npm packages
       npm:
         path: "{{ item.path | dirname }}"
       loop: "{{ npmCompileables.files }}"
+    - name: Identify gulp files
+      find:
+        paths: "{{ deploy_helper.new_release_path }}/vendor"
+        recurse: yes
+        patterns: 'Gulpfile.js'
+      register: gulpCompileables
+    - name: Compile with Gulp
+      command: "{{ item.path | dirname }}/node_modules/gulp/bin/gulp.js
+      loop: "{{ gulpCompileables.files }}"
     - name: Run artisan commands for existing installation
       when: config.stat.exists
       become: true
