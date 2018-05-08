@@ -80,15 +80,15 @@
       find:
         paths: "{{ deploy_helper.new_release_path }}/vendor"
         recurse: yes
-        patterns: 'package.lock,bower.json'
+        patterns: 'package.lock'
       register: npmCompileables
     - name: Install bower packages
       bower:
-        path: "{{ item.path }}"
+        path: "{{ item.path | dirname }}"
       loop: "{{ bowerCompileables.files }}"
     - name: Install npm packages
       npm:
-        path: "{{ item.path }}"
+        path: "{{ item.path | dirname }}"
       loop: "{{ npmCompileables.files }}"
     - name: Run artisan commands for existing installation
       when: config.stat.exists
