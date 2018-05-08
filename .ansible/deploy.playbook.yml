@@ -83,6 +83,7 @@
         - cache:clear
         - migrate
     - name: Delete rev-manifest.json
+      become: true
       file:
         path: "{{ deploy_helper.shared_path }}/public/assets/rev-manifest.json"
         state: absent
