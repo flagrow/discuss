@@ -72,13 +72,13 @@
           recurse: yes
     - name: Identify bower files
       find:
-        paths: "{{ deploy_helper.new_release_path }}/{{ vendor }}"
+        paths: "{{ deploy_helper.new_release_path }}/vendor"
         recurse: yes
         patterns: 'bower.json'
       register: bowerCompileables
     - name: Identify npm files
       find:
-        paths: "{{ deploy_helper.new_release_path }}/{{ vendor }}"
+        paths: "{{ deploy_helper.new_release_path }}/vendor"
         recurse: yes
         patterns: 'package.lock,bower.json'
       register: npmCompileables
