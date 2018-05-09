@@ -12,7 +12,6 @@ do
     echo "> --- Found extension $PACKAGE";
     if [ -d "js" ]; then
       if [ -f "js/bower.json" ]; then
-        ec
         cd js/
         bower install
         cd $PACKAGE_PATH
@@ -20,6 +19,9 @@ do
       for JS in `find js -mindepth 1 -maxdepth 1 -type d`
       do
         cd $JS
+        if [ -f "bower.json" ]; then
+          bower install
+        fi
         if [ -f "package.json" ]; then
           npm install
         fi
